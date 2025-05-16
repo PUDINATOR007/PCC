@@ -13,6 +13,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      color: black;
     }
     .container {
       background-color: white;
@@ -30,6 +31,8 @@
       border-radius: 4px;
       border: 1px solid #ddd;
       font-size: 16px;
+      color: inherit;
+      background-color: inherit;
     }
     .buttons {
       text-align: center;
@@ -44,11 +47,34 @@
       font-size: 16px;
       cursor: pointer;
     }
+
+    /* Modo escuro */
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .container {
+      background-color: #1e1e1e;
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode textarea {
+      background-color: #2c2c2c;
+      color: #e0e0e0;
+      border: 1px solid #555;
+    }
+
+    body.dark-mode button {
+      background-color: #3a8e3a;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Codificador e Decodificador</h1>
+    <button id="toggleDarkMode">Ativar Modo Escuro</button>
+
     <textarea id="inputText" placeholder="Digite aqui..."></textarea>
     <div class="buttons">
       <button onclick="encodeText()">Codificar</button>
@@ -80,11 +106,41 @@
 
     function decodeText() {
       const input = document.getElementById("inputText").value.trim();
-      const regex = /¿|¶|¢|¥|©|®|µ|ß|þ|Æ|[@#$%&*+\-\/=•∞~^()\[\]{}:;"'`§.,_!?]/g;
+      const regex = /¿|¶|¢|¥|©|®|µ|ß|þ|Æ|[@#$%&*+\-\/=•∞~^(){}:;"'`§.,_!?]/g;
       const tokens = input.match(regex) || [];
       const decoded = tokens.map(token => decodeTable[token] || token).join('');
       document.getElementById("outputText").value = decoded;
     }
+
+    // Modo escuro
+    const toggleButton = document.getElementById('toggleDarkMode');
+    const body = document.body;
+
+    function updateButtonText() {
+      if (body.classList.contains('dark-mode')) {
+        toggleButton.textContent = 'Desativar Modo Escuro';
+      } else {
+        toggleButton.textContent = 'Ativar Modo Escuro';
+      }
+    }
+
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      updateButtonText();
+
+      if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-mode');
+      }
+      updateButtonText();
+    });
   </script>
 </body>
 </html>
