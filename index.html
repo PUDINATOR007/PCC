@@ -8,21 +8,24 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f9;
+      color: #000;
+      margin: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      color: black;
+      align-items: flex-start;
+      min-height: 100vh;
     }
+
     .container {
       background-color: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 80%;
+      width: 90%;
       max-width: 600px;
     }
+
     textarea {
       width: 100%;
       height: 120px;
@@ -31,56 +34,81 @@
       border-radius: 4px;
       border: 1px solid #ddd;
       font-size: 16px;
-      color: inherit;
-      background-color: inherit;
+      resize: vertical;
     }
-    .buttons {
+
+    .buttons, .extra-buttons {
       text-align: center;
     }
+
     button {
       padding: 10px 20px;
-      margin: 10px;
-      background-color: #4CAF50;
-      color: white;
+      margin: 10px 5px;
       border: none;
       border-radius: 4px;
       font-size: 16px;
       cursor: pointer;
     }
 
+    #darkModeToggle {
+      background-color: #222;
+      color: white;
+      display: block;
+      margin: 0 auto 20px auto;
+    }
+
+    .blue-button {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .red-button {
+      background-color: #dc3545;
+      color: white;
+    }
+
     /* Modo escuro */
-    body.dark-mode {
+    body.dark {
       background-color: #121212;
-      color: #e0e0e0;
+      color: white;
     }
 
-    body.dark-mode .container {
+    body.dark .container {
       background-color: #1e1e1e;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
     }
 
-    body.dark-mode textarea {
-      background-color: #2c2c2c;
-      color: #e0e0e0;
+    body.dark textarea {
+      background-color: #333;
+      color: white;
       border: 1px solid #555;
     }
 
-    body.dark-mode button {
-      background-color: #3a8e3a;
+    body.dark #darkModeToggle {
+      background-color: #f0f0f0;
+      color: #000;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Codificador e Decodificador</h1>
-    <button id="toggleDarkMode">Ativar Modo Escuro</button>
+    <button id="darkModeToggle">Modo Escuro</button>
+
+    <h1>Codificador e decodificador de PCC</h1>
+    
+    <button class="blue-button" onclick="clearText()">Limpar Tudo</button>
 
     <textarea id="inputText" placeholder="Digite aqui..."></textarea>
+
     <div class="buttons">
       <button onclick="encodeText()">Codificar</button>
       <button onclick="decodeText()">Decodificar</button>
     </div>
+
     <textarea id="outputText" placeholder="Resultado..." readonly></textarea>
+
+    <div class="extra-buttons">
+      <button class="blue-button" onclick="copyText()">Copiar Resultado</button>
+    </div>
   </div>
 
   <script>
@@ -112,34 +140,42 @@
       document.getElementById("outputText").value = decoded;
     }
 
-    // Modo escuro
-    const toggleButton = document.getElementById('toggleDarkMode');
-    const body = document.body;
-
-    function updateButtonText() {
-      if (body.classList.contains('dark-mode')) {
-        toggleButton.textContent = 'Desativar Modo Escuro';
+    function copyText() {
+      const output = document.getElementById("outputText").value;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(output).then(() => {
+          alert("Texto copiado!");
+        }).catch(() => {
+          fallbackCopy(output);
+        });
       } else {
-        toggleButton.textContent = 'Ativar Modo Escuro';
+        fallbackCopy(output);
       }
     }
 
-    toggleButton.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      updateButtonText();
-
-      if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
+    function fallbackCopy(text) {
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand("copy");
+        alert("Texto copiado!");
+      } catch (err) {
+        alert("Falha ao copiar.");
       }
-    });
+      document.body.removeChild(temp);
+    }
 
-    window.addEventListener('load', () => {
-      if (localStorage.getItem('theme') === 'dark') {
-        body.classList.add('dark-mode');
-      }
-      updateButtonText();
+    function clearText() {
+      document.getElementById("inputText").value = "";
+      document.getElementById("outputText").value = "";
+    }
+
+    const toggle = document.getElementById("darkModeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      toggle.textContent = document.body.classList.contains("dark") ? "Modo Claro" : "Modo Escuro";
     });
   </script>
 </body>
