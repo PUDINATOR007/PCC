@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="description" content="Codifique e decodifique textos com o PCC – uma criptografia divertida baseada em pudim! Desenvolvido por Guylherme Yoshimura Paiva.">
-<meta name="keywords" content="Codificador, Decodificar, Texto, PCC, Decodificação, Codificação, Pudim">
+  <meta name="keywords" content="Codificador, Decodificar, Texto, PCC, Decodificação, Codificação, Pudim">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Codifique e decodifique textos facilmente com o PCC, a ferramenta online grátis criada por Guylherme Yoshimura Paiva." />
   <title>Codificador e decodificador de PCC</title>
   <style>
     body {
@@ -192,8 +191,8 @@
   <script>
     const encodeTable = {
       'A': '@', 'B': '#', 'C': '$', 'D': '%', 'E': '&', 'F': '*', 'G': '+', 'H': '-',
-      'I': '/', 'J': '=', 'K': '•', 'L': '~', 'M': '∞', 'N': '^', 'O': '(', 'P': ')',
-      'Q': '[', 'R': ']', 'S': '{', 'T': '}', 'U': ':', 'V': ';', 'W': '§', 'X': '"',
+      'I': '/', 'J': '=', 'K': '•', 'L': '~', 'M': '∞', 'N': '^', 'O': '¤', 'P': '¬',
+      'Q': '¡', 'R': '¦', 'S': '{', 'T': '}', 'U': ':', 'V': ';', 'W': '§', 'X': '"',
       'Y': "'", 'Z': '`',
       '0': '¿', '1': '¶', '2': '¢', '3': '¥', '4': '©', '5': '®', '6': 'µ', '7': 'ß', '8': 'þ', '9': 'Æ',
       ' ': '_', '.': '.', ',': ',', '!': '!', '?': '?'
@@ -212,8 +211,7 @@
 
     function decodeText() {
       const input = document.getElementById("inputText").value.trim();
-      const regex = /¿|¶|¢|¥|©|®|µ|ß|þ|Æ|[@#$%&*+\-\/=•∞~^(){}:"'`§.,_!?]/g;
-      const tokens = input.match(regex) || [];
+      const tokens = input.split(" ");
       const decoded = tokens.map(token => decodeTable[token] || token).join('');
       document.getElementById("outputText").value = decoded;
     }
@@ -221,7 +219,7 @@
     function copyText() {
       const output = document.getElementById("outputText");
       output.select();
-      output.setSelectionRange(0, 99999); // Compatível com dispositivos móveis
+      output.setSelectionRange(0, 99999);
       document.execCommand("copy");
       alert("Texto copiado!");
     }
