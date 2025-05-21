@@ -7,6 +7,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Codificador e decodificador de PCC</title>
   <style>
+  	          @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes buttonClick {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.button-clicked {
+  animation: buttonClick 0.2s ease;
+}
+
+.description {
+  animation: fadeIn 1000000s ease-in-out;
+}
+  
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f9;
@@ -146,31 +194,33 @@
 </head>
 <body>
   <div class="dark-mode-toggle">
-    <button onclick="toggleDarkMode()">Modo Escuro</button>
+    <button onclick="animateButton(this);toggleDarkMode()">Modo Escuro</button>
   </div>
 
   <div class="container">
     <h1>Codificador e decodificador de PCC</h1>
 
     <div class="buttons">
-      <button class="clear-btn" onclick="clearText()">Limpar Tudo</button>
+      <button class="clear-btn" onclick="animateButton(this);clearText()">Limpar Tudo</button>
     </div>
 
     <textarea id="inputText" placeholder="Digite aqui..."></textarea>
     <p>Caracteres digitados: <span id="charCount">0</span></p>
 
     <div class="buttons">
-      <button onclick="encodeText()">Codificar</button>
-      <button onclick="decodeText()">Decodificar</button>
+      <button onclick="animateButton(this);encodeText()">Codificar</button>
+      <button onclick="animateButton(this);decodeText()">Decodificar</button>
     </div>
 
     <textarea id="outputText" placeholder="Resultado..." readonly></textarea>
+    
 
     <div class="buttons">
-      <button class="copy-btn" onclick="copyText()">Copiar</button>
+      <button class="copy-btn" onclick="animateButton(this);copyText()">Copiar</button>
     </div>
+    
 
-    <div class="description">
+    <div class="description" style="animation: fadeIn 1s ease-in-out;">
       <h2 class="text-xl font-bold mb-2" style="text-align: center;">SOBRE O PCC</h2>
       <h2>Como funciona o site:</h2>
       <p>Este site permite que você codifique e decodifique textos usando a criptografia PCC. Basta digitar o texto no primeiro campo e usar os botões para codificar ou decodificar. O resultado aparece logo abaixo.</p>
@@ -273,6 +323,7 @@
         encoded.push(encodedChar);
       }
       document.getElementById("outputText").value = encoded.join(" ");
+        animateOutput();
     }
 
     function decodeText() {
@@ -280,6 +331,7 @@
       const tokens = input.split(" ");
       const decoded = tokens.map(token => decodeTable[token] || token).join('');
       document.getElementById("outputText").value = decoded;
+        animateOutput();
     }
 
     function copyText() {
@@ -291,9 +343,22 @@
     }
 
     function clearText() {
-      document.getElementById("inputText").value = "";
-      document.getElementById("outputText").value = "";
-    }
+  const input = document.getElementById('inputText');
+  const output = document.getElementById('outputText');
+
+  // Adiciona a classe de animação
+  input.classList.add('fade-out');
+  output.classList.add('fade-out');
+
+  // Aguarda a animação terminar antes de apagar o texto
+  setTimeout(() => {
+    input.value = '';
+    output.value = '';
+    input.classList.remove('fade-out');
+    output.classList.remove('fade-out');
+    updateCharCount(); // Atualiza o contador de caracteres
+  }, 300); // Tempo igual ao da animação
+}
 
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
@@ -304,6 +369,26 @@ const charCountSpan = document.getElementById("charCount");
 inputTextArea.addEventListener("input", () => {
   charCountSpan.textContent = inputTextArea.value.length;
 });
+
+    function animateButton(button) {
+  button.classList.add('button-clicked');
+  setTimeout(() => {
+    button.classList.remove('button-clicked');
+  }, 200); // 200ms igual à duração da animação
+}
+
+function updateCharCount() {
+  const input = document.getElementById('inputText');
+  document.getElementById('charCount').textContent = input.value.length;
+}
+
+function animateOutput() {
+  const output = document.getElementById('outputText');
+  output.classList.remove('fade-in'); // remove antes pra reiniciar a animação
+  void output.offsetWidth; // força reflow
+  output.classList.add('fade-in');
+}
+
   </script>
 </body>
 </html>
