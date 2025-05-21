@@ -77,6 +77,7 @@
 
   <div class="container">
     <h1>Atualizações do PCC</h1>
+    <audio id="audiomodoescuro" src="escuro.mp3" preload="auto"></audio>
 
     <h2>Patch 1.4 – Última atualização</h2>
     <ul>
@@ -103,7 +104,20 @@
   <script>
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
+      playAudioById("audiomodoescuro");
     }
+    
+    function playAudioById(id) {
+  const audio = document.getElementById(id);
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = 1.0;
+    audio.play().catch(error => {
+      console.log("Erro ao tentar tocar áudio:", error);
+    });
+  }
+}
   </script>
 </body>
 </html>
