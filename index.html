@@ -201,7 +201,7 @@
     <h1>Codificador e decodificador de PCC</h1>
     
     <audio id="audioCodificarDecodificar" src="cd.mp3" preload="auto"></audio>
-
+    <audio id="audiolimpartudo" src="limpar.mp3" preload="auto"></audio>
 
 
     <div class="buttons">
@@ -364,6 +364,7 @@
     output.classList.remove('fade-out');
     updateCharCount(); // Atualiza o contador de caracteres
   }, 300); // Tempo igual ao da animação
+  playAudioById("audiolimpartudo");
 }
 
     function toggleDarkMode() {
