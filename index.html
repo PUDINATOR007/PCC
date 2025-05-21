@@ -202,7 +202,7 @@
     
     <audio id="audioCodificarDecodificar" src="cd.mp3" preload="auto"></audio>
     <audio id="audiolimpartudo" src="limpar.mp3" preload="auto"></audio>
-
+    <audio id="audiocopiar" src="copiar.mp3" preload="auto"></audio>
 
     <div class="buttons">
       <button class="clear-btn" onclick="animateButton(this);clearText()">Limpar Tudo</button>
@@ -346,6 +346,7 @@
       output.setSelectionRange(0, 99999);
       document.execCommand("copy");
       alert("Texto copiado!");
+      playAudioById("audiocopiar");
     }
 
     function clearText() {
