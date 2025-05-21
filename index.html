@@ -203,6 +203,7 @@
     <audio id="audioCodificarDecodificar" src="cd.mp3" preload="auto"></audio>
     <audio id="audiolimpartudo" src="limpar.mp3" preload="auto"></audio>
     <audio id="audiocopiar" src="copiar.mp3" preload="auto"></audio>
+    <audio id="audiomodoescuro" src="escuro.mp3" preload="auto"></audio>
 
     <div class="buttons">
       <button class="clear-btn" onclick="animateButton(this);clearText()">Limpar Tudo</button>
@@ -376,6 +377,7 @@ const charCountSpan = document.getElementById("charCount");
 
 inputTextArea.addEventListener("input", () => {
   charCountSpan.textContent = inputTextArea.value.length;
+  playAudioById("audiomodoescuro");
 });
 
     function animateButton(button) {
