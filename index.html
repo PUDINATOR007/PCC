@@ -199,6 +199,10 @@
 
   <div class="container">
     <h1>Codificador e decodificador de PCC</h1>
+    
+    <audio id="audioCodificarDecodificar" src="cd.mp3" preload="auto"></audio>
+
+
 
     <div class="buttons">
       <button class="clear-btn" onclick="animateButton(this);clearText()">Limpar Tudo</button>
@@ -324,6 +328,7 @@
       }
       document.getElementById("outputText").value = encoded.join(" ");
         animateOutput();
+        playAudioById("audioCodificarDecodificar");
     }
 
     function decodeText() {
@@ -332,6 +337,7 @@
       const decoded = tokens.map(token => decodeTable[token] || token).join('');
       document.getElementById("outputText").value = decoded;
         animateOutput();
+        playAudioById("audioCodificarDecodificar");
     }
 
     function copyText() {
@@ -389,6 +395,17 @@ function animateOutput() {
   output.classList.add('fade-in');
 }
 
+function playAudioById(id) {
+  const audio = document.getElementById(id);
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = 1.0;
+    audio.play().catch(error => {
+      console.log("Erro ao tentar tocar áudio:", error);
+    });
+  }
+}
   </script>
 </body>
 </html>
