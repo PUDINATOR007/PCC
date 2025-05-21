@@ -212,21 +212,60 @@
 
   <script>
     const encodeTable = {
+      // Letras maiúsculas
       'A': '@', 'B': '#', 'C': '$', 'D': '%', 'E': '&', 'F': '*', 'G': '+', 'H': '-',
       'I': '/', 'J': '=', 'K': '•', 'L': '~', 'M': '∞', 'N': '^', 'O': '¤', 'P': '¬',
       'Q': '¡', 'R': '¦', 'S': '{', 'T': '}', 'U': ':', 'V': ';', 'W': '§', 'X': '"',
       'Y': "'", 'Z': '`',
+
+      // Números
       '0': '¿', '1': '¶', '2': '¢', '3': '¥', '4': '©', '5': '®', '6': 'µ', '7': 'ß', '8': 'þ', '9': 'Æ',
-      ' ': '_', '.': '.', ',': ',', '!': '!', '?': '?'
+
+      // Pontuação comum
+      ' ': '_', '.': '.', ',': ',', '!': '!', '?': '?',
+
+      // Acentos no "a"
+      'á': '∆',
+      'à': '◊',
+      'â': '¥̶',
+      'ã': '¤̇',
+
+      // Acentos no "e"
+      'é': '≠',
+      'ê': '℮',
+
+      // Acentos no "i"
+      'í': '¡̇',
+      'ì': 'ˋ',
+
+      // Acentos no "o"
+      'ó': 'ø',
+      'ò': '◁',
+      'ô': '⊕',
+      'õ': 'ʚ',
+
+      // Acentos no "u"
+      'ú': 'Ʊ',
+      'ù': 'ʉ',
+      'û': '⋃',
+
+      // Consoantes com sinais diacríticos
+      'ç': '¢̧'
     };
 
-    const decodeTable = Object.fromEntries(Object.entries(encodeTable).map(([k, v]) => [v, k]));
+    // Criar tabela de decodificação invertendo chave e valor
+    const decodeTable = Object.fromEntries(
+      Object.entries(encodeTable).map(([key, value]) => [value, key])
+    );
 
     function encodeText() {
-      const input = document.getElementById("inputText").value.toUpperCase();
+      const input = document.getElementById("inputText").value;
       let encoded = [];
       for (let i = 0; i < input.length; i++) {
-        encoded.push(encodeTable[input[i]] || input[i]);
+        const char = input[i];
+        // Tentamos codificar a letra em maiúscula para letras sem acento
+        const encodedChar = encodeTable[char] || encodeTable[char.toUpperCase()] || char;
+        encoded.push(encodedChar);
       }
       document.getElementById("outputText").value = encoded.join(" ");
     }
