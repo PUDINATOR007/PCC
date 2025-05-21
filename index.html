@@ -157,6 +157,7 @@
     </div>
 
     <textarea id="inputText" placeholder="Digite aqui..."></textarea>
+    <p>Caracteres digitados: <span id="charCount">0</span></p>
 
     <div class="buttons">
       <button onclick="encodeText()">Codificar</button>
@@ -293,6 +294,12 @@
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
     }
+    const inputTextArea = document.getElementById("inputText");
+const charCountSpan = document.getElementById("charCount");
+
+inputTextArea.addEventListener("input", () => {
+  charCountSpan.textContent = inputTextArea.value.length;
+});
   </script>
 </body>
 </html>
