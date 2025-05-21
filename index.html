@@ -371,13 +371,13 @@
 
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
+      playAudioById("audiomodoescuro");
     }
     const inputTextArea = document.getElementById("inputText");
 const charCountSpan = document.getElementById("charCount");
 
 inputTextArea.addEventListener("input", () => {
   charCountSpan.textContent = inputTextArea.value.length;
-  playAudioById("audiomodoescuro");
 });
 
     function animateButton(button) {
